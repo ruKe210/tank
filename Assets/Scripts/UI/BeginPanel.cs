@@ -15,9 +15,10 @@ public class BeginPanel : BasePanel
         UIMgr.Instance.isPause = false;
         start.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene("GameScene");
             UIMgr.Instance.HidePanel<BeginPanel>();
-            UIMgr.Instance.ShowPanel<hpPanel>();
+            //UIMgr.Instance.ShowPanel<hpPanel>();
+            SceneManager.LoadScene("GameScene");
+
         });
 
        

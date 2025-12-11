@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     Rigidbody player_rb;
     public float move_speed = 10;
     public float roate_speed = 10;
-    public float MouseSensitivity = 10;
+    float MouseSensitivity = 10;
     public float WeaponCoolDown = 1.0f;
     float NextFireTime = 0;
 
@@ -56,12 +56,14 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        UIMgr.Instance.canvas = GameObject.Instantiate(Resources.Load<Canvas>("UI/Canvas"));
+        UIMgr.Instance.ShowPanel<hpPanel>();
         hp= GameObject.Find("hp");
         hpbg= GameObject.Find("hp_back");
         this.isControl = true;
         player_rb = this.GetComponent<Rigidbody>();
         var enemy = this.GetComponent<Enemy>();
-
+        MouseSensitivity = DataMgr.Instance.GetSoundData().mouseSensitivity*1000;
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
     }

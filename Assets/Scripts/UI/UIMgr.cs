@@ -11,13 +11,13 @@ public class UIMgr
 
     private Dictionary<string, BasePanel> panelDic = new Dictionary<string, BasePanel>();
 
-    private GameObject canvas;
+    public Canvas canvas;
     public bool isPause; 
     private  UIMgr()
     {
         isPause = false;
-        this.canvas = GameObject.Find("Canvas");
-        GameObject.DontDestroyOnLoad(this.canvas);
+        //this.canvas = GameObject.Find("Canvas");
+        //GameObject.DontDestroyOnLoad(this.canvas);
 
         //this.ShowPanel<LoginPanel>();
     }

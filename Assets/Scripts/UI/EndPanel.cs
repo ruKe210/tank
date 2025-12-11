@@ -14,9 +14,10 @@ public class EndPanel : BasePanel
     {
         
         quit.onClick.AddListener(() =>{
-            SceneManager.LoadScene("BeginScene");
             UIMgr.Instance.HidePanel<EndPanel>();
             UIMgr.Instance.HidePanel<hpPanel>();
+            SceneManager.LoadScene("BeginScene");
+
         });
 
     }

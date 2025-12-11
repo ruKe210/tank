@@ -11,7 +11,7 @@ public class Camera1 : MonoBehaviour
 {
     public GameObject Player;
     public GameObject PlayerHead;
-    float MouseSensitivity;
+    //float MouseSensitivity;
     public Vector3 offset = new Vector3(0, 4, -4); // 相机与目标的偏移量（x:左右, y:高低, z:前后）
     public float smoothSpeed = 1f; // 跟随平滑度（值越大越灵敏）
     Vector3 FinalPos = new Vector3(0, 0, 0);
@@ -19,7 +19,9 @@ public class Camera1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MouseSensitivity = Player.GetComponent<Player>().MouseSensitivity;
+      
+        //MouseSensitivity = DataMgr.Instance.GetSoundData().mouseSensitivity*10;
+        //print(MouseSensitivity);
     }
     public void Rotate()
     {

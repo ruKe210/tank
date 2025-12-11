@@ -16,10 +16,19 @@ public class SettingPanel : BasePanel
     public Button save;
 
     private SoundData soundData;
+
+    public Slider mouseSensitivity;
+
+    Canvas canvas;
+    AudioSource bkmuc;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-  
+        canvas = UIMgr.Instance.canvas;
+        bkmuc = canvas.GetComponent<AudioSource>();
         soundData = DataMgr.Instance.GetSoundData();
 
         isMusic.isOn = soundData.isMusic;
@@ -27,11 +36,13 @@ public class SettingPanel : BasePanel
         musicVolume.value = soundData.musicVolume;
 
         soundVolume.value = soundData.soundVolume;
-        
-        
+        mouseSensitivity.value = soundData.mouseSensitivity;
+
         isMusic.onValueChanged.AddListener((isMusic) =>
         {
             soundData.isMusic = isMusic;
+            
+            bkmuc.mute = !isMusic;
         });
         isSound.onValueChanged.AddListener((isSound) =>
         {
@@ -41,10 +52,16 @@ public class SettingPanel : BasePanel
         musicVolume.onValueChanged.AddListener((musicVolume) =>
         {
             soundData.musicVolume = musicVolume;
+            bkmuc.volume = musicVolume;
         });
         soundVolume.onValueChanged.AddListener((soundVolume) =>
         {
             soundData.soundVolume = soundVolume;
+        });
+
+        mouseSensitivity.onValueChanged.AddListener((mouseSensitivity) =>
+        {
+            soundData.mouseSensitivity = mouseSensitivity;
         });
 
         save.onClick.AddListener(() =>
@@ -55,6 +72,9 @@ public class SettingPanel : BasePanel
         });
         back.onClick.AddListener(() =>
         {
+            soundData = DataMgr.Instance.GetSoundData();
+            bkmuc.mute = !soundData.isMusic;
+            bkmuc.volume = soundData.musicVolume;
             UIMgr.Instance.HidePanel<SettingPanel>();
             UIMgr.Instance.ShowPanel<BeginPanel>();
         });
