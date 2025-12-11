@@ -54,9 +54,11 @@ public class Enemy : MonoBehaviour
     float TurnCool = 10;
     float NextTurn = 0;
     int PosNum = 0;
+
+    bool flag = true;
     public void BeHit()
     {
-        if((Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 15.0f))
+        if((Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 50.0f))
         {
             this.IsPlayerDetected = true;
             return;
@@ -70,7 +72,7 @@ public class Enemy : MonoBehaviour
             return;
         }
   
-        if (Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 15.0f)
+        if (Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 50.0f)
         {
             Vector3 turretForward = this.TankHead.transform.forward;
             turretForward.y = 0; // 同样锁定Y轴，确保在同一平面
@@ -79,15 +81,15 @@ public class Enemy : MonoBehaviour
             float angleToPlayer = Vector3.Angle(turretForward, targetDirection);
 
         
-            print(transform.position);
-            print(targetDirection);
-            if (angleToPlayer <= 60.0f)
+            //print(transform.position);
+            //print(targetDirection);
+            if (angleToPlayer <= 90.0f)
             {
                     
                 Debug.DrawRay(transform.position  + Vector3.up * 0.5f, targetDirection.normalized * 15, IsPlayerDetected ? Color.green : Color.red);
                 if (Physics.Raycast(transform.position +  Vector3.up * 0.5f, targetDirection.normalized, out RaycastHit hitInfo, 15.0f))
                 {
-                    print(hitInfo.collider.gameObject.name);
+                    //print(hitInfo.collider.gameObject.name);
                     if (hitInfo.collider.CompareTag("Player"))
                     {
                         print("hit");
@@ -109,7 +111,7 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    print("nohit");
+                    //print("nohit");
                     IsPlayerDetected = false;
                     Suspect = 0;
                 }
@@ -188,19 +190,31 @@ public class Enemy : MonoBehaviour
 
         this.transform.Translate(this.transform.forward  *move_speed* Time.deltaTime, Space.World);
 
-        print(PosNum);
-        print(Vector3.Distance(this.transform.position, PatrolPos[PosNum].transform.position));
+        //print(PosNum);
+        //print(Vector3.Distance(this.transform.position, PatrolPos[PosNum].transform.position));
         if (Vector3.Distance(this.transform.position, PatrolPos[PosNum].transform.position) < 2f)
         {
-            PosNum++;
-            if (PosNum >= PatrolPos.Length)
-                PosNum = 0;
+            if (flag)
+                PosNum++;
+            else
+                PosNum--;
+            if (PosNum >= PatrolPos.Length )
+            {
+                flag = !flag;
+                PosNum -= 2;
+            }
+            if(PosNum < 0)
+            {
+                flag = !flag;
+                PosNum+=2;
+            }
+               
         }
   
     }
     void Follow()
     {
-        if(Vector3.Distance(this.transform.position,CoverRange.transform.position)>25.0f)
+        if(Vector3.Distance(this.transform.position,CoverRange.transform.position)>50.0f)
         {
             this.IsPlayerDetected = false;
             return;
@@ -268,30 +282,35 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(IsPlayerDetected)
-            print(IsPlayerDetected);
-        Detect();
-        if (IsPlayerDetected)
+        if (!UIMgr.Instance.isPause)
         {
-            Lock();
-            Fire();
-            Follow();
-        }
-        else
-        {
-            Patrol();
-            Vector3 turretForward = this.transform.forward;
-            turretForward.y = 0; // 同样锁定Y轴，确保在同一平面
-            Vector3 Direction = this.TankHead.transform.forward;
-            Direction.y = 0; // 锁定Y轴，避免炮台上下倾斜
-            float angleToPlayer = Vector3.Angle(turretForward, Direction);
-            print(angleToPlayer);
-            if (angleToPlayer >= 30)
+            if (IsPlayerDetected)
+                print(IsPlayerDetected);
+
+            if (IsPlayerDetected)
             {
-                roate_speed *= -1;
+                Lock();
+                Fire();
+                Follow();
             }
-            this.TankHead.transform.Rotate(Vector3.up * roate_speed  * Time.deltaTime, Space.World);
+            else
+            {
+                Detect();
+                Patrol();
+                Vector3 turretForward = this.transform.forward;
+                turretForward.y = 0; // 同样锁定Y轴，确保在同一平面
+                Vector3 Direction = this.TankHead.transform.forward;
+                Direction.y = 0; // 锁定Y轴，避免炮台上下倾斜
+                float angleToPlayer = Vector3.Angle(turretForward, Direction);
+                //print(angleToPlayer);
+                if (angleToPlayer >= 30)
+                {
+                    roate_speed *= -1;
+                }
+                this.TankHead.transform.Rotate(Vector3.up * roate_speed * Time.deltaTime, Space.World);
+            }
         }
+          
  
         
     }

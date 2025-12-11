@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class UIMgr
@@ -11,19 +12,23 @@ public class UIMgr
     private Dictionary<string, BasePanel> panelDic = new Dictionary<string, BasePanel>();
 
     private GameObject canvas;
+    public bool isPause; 
     private  UIMgr()
     {
+        isPause = false;
         this.canvas = GameObject.Find("Canvas");
         GameObject.DontDestroyOnLoad(this.canvas);
-        
-        this.ShowPanel<LoginPanel>();
+
+        //this.ShowPanel<LoginPanel>();
     }
 
     public void  ShowPanel<T>() where T :BasePanel
     {
         if (!panelDic.ContainsKey(typeof(T).Name))
         {
-            GameObject panel = GameObject.Instantiate(Resources.Load<GameObject>("UI/" + typeof(T).Name));
+            string name = typeof(T).Name;
+            Debug.Log(typeof(T).Name);
+            GameObject panel = GameObject.Instantiate(Resources.Load<GameObject>( "UI/"+typeof(T).Name));
             panel.transform.SetParent(this.canvas.transform, false);
 
             panelDic.Add(typeof(T).Name, panel.GetComponent<T>());

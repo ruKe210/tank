@@ -8,13 +8,13 @@ public class BasePanel : MonoBehaviour
 {
 
 
-    private CanvasGroup canvasGroup;
+    //private CanvasGroup canvasGroup;
     float alphaSpeed = 10;
     //public bool isShow = true;
     private UnityAction eventCallBack;
     private void Awake()
     {
-        canvasGroup = this.GetComponent<CanvasGroup>();
+        //canvasGroup = this.GetComponent<CanvasGroup>();
 
     }
     void Start()
@@ -25,12 +25,12 @@ public class BasePanel : MonoBehaviour
 
     public virtual void ShowMe()
     {
-        this.canvasGroup.alpha = 1;
+        //this.canvasGroup.alpha = 1;
     }
     public virtual void HideMe(UnityAction callBack)
     {
 
-        this.canvasGroup.alpha = 0;
+        //this.canvasGroup.alpha = 0;
         this.eventCallBack = callBack;
         this.eventCallBack();
     }

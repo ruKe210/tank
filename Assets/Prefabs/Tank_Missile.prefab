@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 5532038467408910021}
   - component: {fileID: 5473679434634196386}
   - component: {fileID: 748309676970998360}
-  m_Layer: 0
+  - component: {fileID: 837854814580357242}
+  m_Layer: 11
   m_Name: Tank_Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +34,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7740983947075149293}
   - {fileID: 4077205188686338660}
   - {fileID: 7412724300130756369}
   m_Father: {fileID: 0}
@@ -55,12 +55,12 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 1.25
+  m_Radius: 1.4
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1.25, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &5532038467408910021
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyAnimation: {fileID: 161024, guid: 5c3743fc87a42484db9b6e79f25f2c63, type: 3}
+  HP: 5
+  maxHP: 5
 --- !u!114 &748309676970998360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +125,31 @@ MonoBehaviour:
   PlayerInComing: {fileID: 0}
   TowerHeah: {fileID: 8273644490334773597}
   RotateSpeed: 50
+  SuspectRate: 10
+  DetectSuspect: 100
+  HP: {fileID: 2800000, guid: 46abc2022232e7a4a9abdc8e333e01fa, type: 3}
+  HPbg: {fileID: 2800000, guid: 003486d835e4cc04e9716c9a0bc2105a, type: 3}
+--- !u!65 &837854814580357242
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167779218998198511}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8, y: 3.7, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2748453599882787682
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +161,7 @@ GameObject:
   - component: {fileID: 4077205188686338660}
   - component: {fileID: 6996723066702995173}
   - component: {fileID: 557788531657217887}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankBase_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4280811604629246083}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShootPoint 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +273,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2572380429512080627}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,111 +295,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5899955355520657984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4974976144805511447
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7740983947075149293}
-  - component: {fileID: 8764914806266554825}
-  - component: {fileID: 7639944480253555870}
-  - component: {fileID: 3542066306338824005}
-  m_Layer: 0
-  m_Name: DetectRange
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7740983947075149293
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974976144805511447}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 152704361140394152}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8764914806266554825
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974976144805511447}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7639944480253555870
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974976144805511447}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3542066306338824005
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974976144805511447}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 8.27
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6956170887403458172
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4754125248635518862}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShootPoint 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +337,7 @@ GameObject:
   - component: {fileID: 5899955355520657984}
   - component: {fileID: 6262934593785531896}
   - component: {fileID: 8498682077341330502}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MissilePods
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -500,7 +422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7412724300130756369}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TurretObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7473231165724511131}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +487,7 @@ GameObject:
   - component: {fileID: 5181291016584567032}
   - component: {fileID: 3377526122379418464}
   - component: {fileID: 8232488508175146953}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankTurret_Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

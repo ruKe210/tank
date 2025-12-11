@@ -24,6 +24,7 @@ public class Bullet : MonoBehaviour
             if(collision.gameObject.layer==LayerMask.NameToLayer("Player"))
             {
                 collision.gameObject.GetComponent<Basic>().HP--;
+                collision.gameObject.GetComponent<Player>().BeHit();
             }
             else if(collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
@@ -34,12 +35,16 @@ public class Bullet : MonoBehaviour
                     else
                         collision.gameObject.GetComponent<EnemyTower>().BeHit();
                     collision.gameObject.GetComponent<Basic>().HP--;
+
+                    return; 
                 }
                    
             }
             else
             {
-                Destroy(collision.gameObject);
+                if(collision.gameObject.layer!=LayerMask.NameToLayer("FixedWall"))
+
+                    Destroy(collision.gameObject);
             }
 
             
@@ -64,17 +69,22 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Rigidbody rb = this.GetComponent<Rigidbody>();
-        //print(this.transform.position);
-        Vector3 bulldir = transform.forward;
-        //print(bulldir);
-        bulldir.y = 0;
-        rb.AddForce(bulldir * BulletSpeed);
-        //print(this.shooter + "456");
-        float distance = Vector3.Distance(this.transform.position, shooter.transform.position);
-        if (distance >= EliminateDistancce)
+        if (!UIMgr.Instance.isPause)
         {
-            Destroy(this.gameObject);
+            Rigidbody rb = this.GetComponent<Rigidbody>();
+            //print(this.transform.position);
+            Vector3 bulldir = transform.forward;
+            //print(bulldir);
+            bulldir.y = 0;
+            rb.AddForce(bulldir * BulletSpeed);
+            //print(this.shooter + "456");
+            float distance = Vector3.Distance(this.transform.position, shooter.transform.position);
+            if (distance >= EliminateDistancce)
+            {
+                Destroy(this.gameObject);
+            }
+
+
         }
 
     }

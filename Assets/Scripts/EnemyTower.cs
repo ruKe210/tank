@@ -22,10 +22,13 @@ public class EnemyTower : MonoBehaviour
     float Suspect = 0;
     public float SuspectRate = 10;
     public float DetectSuspect = 100;
-
+    Rect HPPos;
+    Rect HPPosBack;
+    public Texture HP;
+    public Texture HPbg;
     public void BeHit()
     {
-        if ((Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 15.0f))
+        if ((Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 50.0f))
         {
             this.IsPlayerDetected = true;
             return;
@@ -38,22 +41,26 @@ public class EnemyTower : MonoBehaviour
 
     void Lock()
     {
-        Vector3 targetDirection = PlayerInComing.transform.position - TowerHeah.transform.position;
-        targetDirection.y = 0; // 锁定Y轴，避免炮台上下倾斜
-        if (targetDirection.magnitude > 0.1f)
+        if(PlayerInComing!=null)
         {
-            // 3. 计算目标旋转角度（看向目标方向）
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            Vector3 targetDirection = PlayerInComing.transform.position - TowerHeah.transform.position;
+            targetDirection.y = 0; // 锁定Y轴，避免炮台上下倾斜
+            if (targetDirection.magnitude > 0.1f)
+            {
+                // 3. 计算目标旋转角度（看向目标方向）
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 
-            // 4. 平滑旋转到目标角度（使用Lerp实现平滑过渡）
-            TowerHeah.transform.rotation = Quaternion.Lerp(
-                TowerHeah.transform.rotation,    // 当前旋转
-                targetRotation,        // 目标旋转
-                RotateSpeed/5 * Time.deltaTime  // 插值系数（与时间挂钩，确保不同帧率下速度一致）
-            );
+                // 4. 平滑旋转到目标角度（使用Lerp实现平滑过渡）
+                TowerHeah.transform.rotation = Quaternion.Lerp(
+                    TowerHeah.transform.rotation,    // 当前旋转
+                    targetRotation,        // 目标旋转
+                    RotateSpeed / 5 * Time.deltaTime  // 插值系数（与时间挂钩，确保不同帧率下速度一致）
+                );
 
 
+            }
         }
+       
        
     }
     void Detect()
@@ -64,58 +71,52 @@ public class EnemyTower : MonoBehaviour
             return;
         }
 
-        if (Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) < 15.0f)
+
+        Vector3 turretForward = this.TowerHeah.transform.forward;
+        turretForward.y = 0; // 同样锁定Y轴，确保在同一平面
+        Vector3 targetDirection = PlayerInComing.transform.position - TowerHeah.transform.position;
+        targetDirection.y = 0; // 锁定Y轴，避免炮台上下倾斜
+        float angleToPlayer = Vector3.Angle(turretForward, targetDirection);
+
+
+
+        //print(transform.position);
+        //print(targetDirection);
+        //if (angleToPlayer <= 60.0f)
+
+        Debug.DrawRay(transform.position + Vector3.up * 0.5f, targetDirection.normalized * 50, IsPlayerDetected ? Color.green : Color.red);
+        if (Physics.Raycast(transform.position + Vector3.up * 0.5f, targetDirection.normalized, out RaycastHit hitInfo))
         {
-            Vector3 turretForward = this.TowerHeah.transform.forward;
-            turretForward.y = 0; // 同样锁定Y轴，确保在同一平面
-            Vector3 targetDirection = PlayerInComing.transform.position - TowerHeah.transform.position;
-            targetDirection.y = 0; // 锁定Y轴，避免炮台上下倾斜
-            float angleToPlayer = Vector3.Angle(turretForward, targetDirection);
-
-
-            //print(transform.position);
-            //print(targetDirection);
-            if (angleToPlayer <= 60.0f)
+            //print(hitInfo.collider.gameObject.name);
+            if (hitInfo.collider.CompareTag("Player"))
             {
+                //print("hit");
+                //print(Suspect);
+                //if (Suspect < DetectSuspect)
+                //    Suspect += (60 - angleToPlayer) * (15 - Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position)) * Time.deltaTime;
+                //if (Suspect >= DetectSuspect)
+                //{
+                           
+                //}
+                IsPlayerDetected = true;
 
-                Debug.DrawRay(transform.position + Vector3.up * 0.5f, targetDirection.normalized * 15, IsPlayerDetected ? Color.green : Color.red);
-                if (Physics.Raycast(transform.position + Vector3.up * 0.5f, targetDirection.normalized, out RaycastHit hitInfo, 15.0f))
-                {
-                    //print(hitInfo.collider.gameObject.name);
-                    if (hitInfo.collider.CompareTag("Player"))
-                    {
-                        print("hit");
-                        print(Suspect);
-                        if (Suspect < DetectSuspect)
-                            Suspect += (60 - angleToPlayer) * (15 - Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position)) * Time.deltaTime;
-                        if (Suspect >= DetectSuspect)
-                        {
-                            IsPlayerDetected = true;
-                        }
-
-                    }
-                    else
-                    {
-                        IsPlayerDetected = false;
-                        Suspect = 0;
-                    }
-
-                }
-                else
-                {
-                    print("nohit");
-                    IsPlayerDetected = false;
-                    Suspect = 0;
-                }
             }
-
+            else
+            {
+                IsPlayerDetected = false;
+                Suspect = 0;
+            }
 
         }
         else
         {
+            print("nohit");
             IsPlayerDetected = false;
             Suspect = 0;
         }
+           
+
+
     }
     void Fire()
     {
@@ -132,22 +133,56 @@ public class EnemyTower : MonoBehaviour
             NextLunchTime = Time.time + WeaponCoolDwon;
         }
     }
+    private void OnGUI()
+    {
 
+        if (IsPlayerDetected)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(this.transform.position);
+            screenPos.y = Screen.height - screenPos.y;
+
+            HPPosBack.x = screenPos.x - 50;
+            HPPosBack.y = screenPos.y - 45;
+            HPPosBack.width = 100;
+            HPPosBack.height = 10;
+
+
+            GUI.DrawTexture(HPPosBack, HPbg);
+
+            HPPos = HPPosBack;
+            HPPos.width = this.GetComponent<Basic>().HP / this.GetComponent<Basic>().maxHP * HPPosBack.width;
+            GUI.DrawTexture(HPPos, HP);
+
+        }
+
+
+
+    }
 
     // Update is called once per frame
     void Update()
     {
-        Detect();
-        if(IsPlayerDetected)
+        if (!UIMgr.Instance.isPause)
         {
-            Lock();
-            Invoke("Fire", 0.5f);
-          
+            if (IsPlayerDetected&& PlayerInComing!=null)
+            {
+                Lock();
+                Invoke("Fire", 0.5f);
+                if(PlayerInComing!=null)
+                {
+                    if ((Vector3.Distance(this.gameObject.transform.position, this.PlayerInComing.transform.position) > 50.0f))
+                        IsPlayerDetected = false;
+                }
+               
+            }
+            else
+            {
+                Rotate();
+                Detect();
+
+            }
         }
-        else
-        {
-            Rotate();
-        }
+            
         
     }
 

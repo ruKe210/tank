@@ -30,17 +30,22 @@ public class Player : MonoBehaviour
     public GameObject CannonHitEffect;
     public GameObject[] SetInvisible;
 
-
+    public bool isControl;
     public GameObject hp;
-    private void Awake()
+    public GameObject hpbg;
+
+
+    public void BeHit()
     {
-        //
+        float width =  this.hpbg.GetComponent<RectTransform>().rect.width;
+        float maxhp = this.GetComponent<Basic>().maxHP;
+        float nowhp = this.GetComponent<Basic>().HP;
+        RectTransform hprect = this.hp.GetComponent<RectTransform>();
+
+        //Vector2 sizeDelta= hprect.sizeDelta;
+        hprect.sizeDelta = new Vector2(width*(nowhp/maxhp), hprect.sizeDelta.y);
+        print(hp.transform.position);
     }
-
-    //void BeHit()
-    //{
-
-    //}
 
 
     void checkhp()
@@ -51,6 +56,9 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        hp= GameObject.Find("hp");
+        hpbg= GameObject.Find("hp_back");
+        this.isControl = true;
         player_rb = this.GetComponent<Rigidbody>();
         var enemy = this.GetComponent<Enemy>();
 
@@ -147,30 +155,62 @@ public class Player : MonoBehaviour
         {
             var CannonHitEffectClone = Instantiate(CannonHitEffect, this.transform.position, this.transform.rotation);
             CannonHitEffectClone.GetComponent<AudioSource>().Play();
-            Destroy(collision.gameObject);
+            if (collision.gameObject.layer != LayerMask.NameToLayer("FixedWall"))
+                Destroy(collision.gameObject);
         }
+
+        //if(collision.gameObject.layer==LayerMask.NameToLayer("END"))
+        //{
+        //    Camera.main.GetComponent<Camera1>().Rotate();
+        //    this.isControl = false;
+        //}
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("END"))
+        {
+
+            this.isControl = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UIMgr.Instance.ShowPanel<EndPanel>();
+        }
+    }
+    private void OnTrigge(Collider other)
+    {
+       
     }
     // Update is called once per frame
     void Update()
     {
-        
-        if (this.NextAccTime <= Time.time)
-            this.PlayerStatus = (int)Player.Status.Default;
-        if (this.PlayerStatus!=(int)Player.Status.Accelerating)
-            BasicMove();
-        ViewMove();
-        Fire();
-        Accelerate();
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if(!UIMgr.Instance.isPause)
         {
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            if (this.NextAccTime <= Time.time)
+                this.PlayerStatus = (int)Player.Status.Default;
+            if (isControl)
+            {
+                if (this.PlayerStatus != (int)Player.Status.Accelerating)
+                    BasicMove();
+                ViewMove();
+                Fire();
+                Accelerate();
+
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    UnityEngine.Cursor.lockState = CursorLockMode.None;
+                    UIMgr.Instance.ShowPanel<PausePanel>();
+                    UIMgr.Instance.isPause = true;
+                }
+                //重新点击后再次进入鼠标开启
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                }
+
+            }
+
         }
-        //重新点击后再次进入鼠标开启
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        }
-  
+
+
 
 
     }

@@ -34,18 +34,25 @@ public class Missile : MonoBehaviour
             Destroy(MissileBeHitEffectClone, 2);
             if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-
-                Destroy(this.gameObject);
+             
+                    Destroy(this.gameObject);
             }
             else
             {
                 if(collision.gameObject.layer==LayerMask.NameToLayer("Player"))
                 {
                     collision.gameObject.GetComponent<Basic>().HP-=1;
+                    collision.gameObject.GetComponent<Player>().BeHit();
+
+
                     print(collision.gameObject.name + "Be Hit, -1Hp");
                 }
                 else
-                    Destroy(collision.gameObject);
+                {
+                    if (collision.gameObject.layer != LayerMask.NameToLayer("FixedWall"))
+                        Destroy(collision.gameObject);
+                }
+                    
                 Destroy(this.gameObject);
             }
         }

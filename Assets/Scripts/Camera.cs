@@ -21,15 +21,19 @@ public class Camera1 : MonoBehaviour
     {
         MouseSensitivity = Player.GetComponent<Player>().MouseSensitivity;
     }
-
+    public void Rotate()
+    {
+        this.transform.RotateAround(FinalPos, Vector3.up, 50 * Time.deltaTime);
+        this.transform.LookAt(FinalPos + Vector3.up);
+    }
     // Update is called once per frame
     void Update()
     {
         
-        if (Player.IsDestroyed())
+        if (Player.IsDestroyed()||Player.GetComponent<Player>().isControl==false)
         {
-            this.transform.RotateAround(FinalPos, Vector3.up, 50 * Time.deltaTime);
-            this.transform.LookAt(FinalPos+Vector3.up);
+            Rotate();
+
             return;
         }
         else
