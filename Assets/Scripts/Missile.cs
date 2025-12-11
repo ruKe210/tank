@@ -30,6 +30,8 @@ public class Missile : MonoBehaviour
             Vector3 hitpos = this.transform.position;
             hitpos.y = 0;
             var MissileBeHitEffectClone = Instantiate(MissileBeHitEffect, hitpos, this.transform.rotation);
+            MissileBeHitEffectClone.GetComponent<AudioSource>().mute = !DataMgr.Instance.GetSoundData().isSound;
+            MissileBeHitEffectClone.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().soundVolume;
             MissileBeHitEffectClone.GetComponent<AudioSource>().Play();
             Destroy(MissileBeHitEffectClone, 2);
             if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -50,9 +52,12 @@ public class Missile : MonoBehaviour
                 else
                 {
                     if (collision.gameObject.layer != LayerMask.NameToLayer("FixedWall"))
-                        Destroy(collision.gameObject);
+                        collision.gameObject.GetComponent<Basic>().kill();
+
+                    //Destroy(collision.gameObject);
                 }
-                    
+
+
                 Destroy(this.gameObject);
             }
         }

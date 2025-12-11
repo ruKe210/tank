@@ -57,6 +57,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         UIMgr.Instance.canvas = GameObject.Instantiate(Resources.Load<Canvas>("UI/Canvas"));
+        UIMgr.Instance.canvas.GetComponent<AudioSource>().mute =!DataMgr.Instance.GetSoundData().isMusic;
+        UIMgr.Instance.canvas.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().musicVolume;
         UIMgr.Instance.ShowPanel<hpPanel>();
         hp= GameObject.Find("hp");
         hpbg= GameObject.Find("hp_back");
@@ -84,6 +86,8 @@ public class Player : MonoBehaviour
 
             //GameObject Bullet = Instantiate(BulletPrefab, Weapon[0].transform.position, Weapon[0].transform.rotation);
             //Bullet.transform.Translate(Vector3.forward * BulletSpeed * Time.deltaTime);
+            this.GetComponent<AudioSource>().mute = !DataMgr.Instance.GetSoundData().isSound;
+            this.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().soundVolume;
             this.GetComponent<AudioSource>().Play();
             //var FireSound = this.transform.Find("CannonShoot");
             //FireSound.GetComponent<AudioSource>().Play();
@@ -156,9 +160,15 @@ public class Player : MonoBehaviour
         if(this.PlayerStatus==(int)Player.Status.Accelerating)
         {
             var CannonHitEffectClone = Instantiate(CannonHitEffect, this.transform.position, this.transform.rotation);
+            CannonHitEffectClone.GetComponent<AudioSource>().mute = !DataMgr.Instance.GetSoundData().isSound;
+            CannonHitEffectClone.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().soundVolume;
             CannonHitEffectClone.GetComponent<AudioSource>().Play();
             if (collision.gameObject.layer != LayerMask.NameToLayer("FixedWall"))
+            {
+                collision.gameObject.GetComponent<Basic>().kill();
                 Destroy(collision.gameObject);
+            }
+                
         }
 
         //if(collision.gameObject.layer==LayerMask.NameToLayer("END"))

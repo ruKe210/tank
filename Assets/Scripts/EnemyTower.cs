@@ -127,6 +127,8 @@ public class EnemyTower : MonoBehaviour
                 GameObject MissileClone = Instantiate(MissilePrefab, ShootPoint[i].transform.position, MissilePos.transform.rotation);
                 MissileClone.gameObject.GetComponent<Missile>().SetShooter(this.gameObject);
                 GameObject MissileShotClone = Instantiate(MissileShot, ShootPoint[i].transform.position, MissilePos.transform.rotation);
+                MissileShotClone.GetComponent<AudioSource>().mute = !DataMgr.Instance.GetSoundData().isSound;
+                MissileShotClone.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().soundVolume;
                 Destroy(MissileShotClone, 2);
 
             }

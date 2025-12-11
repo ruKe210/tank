@@ -17,6 +17,8 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject != shooter)
         {
             var CannonHitEffectClone = Instantiate(CannonHitEffect, this.transform.position, this.transform.rotation);
+            CannonHitEffectClone.GetComponent<AudioSource>().mute = !DataMgr.Instance.GetSoundData().isSound;
+            CannonHitEffectClone.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().soundVolume;
             CannonHitEffectClone.GetComponent<AudioSource>().Play();
             
 
@@ -43,8 +45,11 @@ public class Bullet : MonoBehaviour
             else
             {
                 if(collision.gameObject.layer!=LayerMask.NameToLayer("FixedWall"))
+                {
+                    collision.gameObject.GetComponent<Basic>().kill();
+                }
 
-                    Destroy(collision.gameObject);
+                    //Destroy(collision.gameObject);
             }
 
             
@@ -78,11 +83,19 @@ public class Bullet : MonoBehaviour
             bulldir.y = 0;
             rb.AddForce(bulldir * BulletSpeed);
             //print(this.shooter + "456");
-            float distance = Vector3.Distance(this.transform.position, shooter.transform.position);
-            if (distance >= EliminateDistancce)
+            if(shooter!=null)
+            {
+                float distance = Vector3.Distance(this.transform.position, shooter.transform.position);
+                if (distance >= EliminateDistancce)
+                {
+                    Destroy(this.gameObject);
+                }
+            }
+            else
             {
                 Destroy(this.gameObject);
             }
+
 
 
         }

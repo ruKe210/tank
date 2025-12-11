@@ -16,6 +16,7 @@ public class EndPanel : BasePanel
         quit.onClick.AddListener(() =>{
             UIMgr.Instance.HidePanel<EndPanel>();
             UIMgr.Instance.HidePanel<hpPanel>();
+            //Camera.main.gameObject.SetActive(false);
             SceneManager.LoadScene("BeginScene");
 
         });

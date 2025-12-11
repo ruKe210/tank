@@ -133,6 +133,12 @@ public class Enemy : MonoBehaviour
             for (int i = 0; i < Weapon.Length; i++)
             {
                 GameObject Bullet = Instantiate(BulletPrefab, Weapon[i].transform.position, Weapon[i].transform.rotation);
+                if(Bullet.GetComponent<AudioSource>()!=null)
+                {
+                    Bullet.GetComponent<AudioSource>().mute = !DataMgr.Instance.GetSoundData().isSound;
+                    Bullet.GetComponent<AudioSource>().volume = DataMgr.Instance.GetSoundData().soundVolume;
+                }
+   
                 Bullet.GetComponent<Bullet>().SetShooter(gameObject);
  
             }

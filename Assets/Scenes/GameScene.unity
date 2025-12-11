@@ -35962,7 +35962,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1840412300}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CoverRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46960,7 +46960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6769774103363848760, guid: 48ea1f1012b477f46bd61af83e968f50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29.21
+      value: -27.28
       objectReference: {fileID: 0}
     - target: {fileID: 6769774103363848760, guid: 48ea1f1012b477f46bd61af83e968f50, type: 3}
       propertyPath: m_LocalPosition.y
@@ -46968,7 +46968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6769774103363848760, guid: 48ea1f1012b477f46bd61af83e968f50, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -37.74
+      value: -38.31
       objectReference: {fileID: 0}
     - target: {fileID: 6769774103363848760, guid: 48ea1f1012b477f46bd61af83e968f50, type: 3}
       propertyPath: m_LocalRotation.w
